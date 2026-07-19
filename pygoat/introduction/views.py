@@ -21,6 +21,7 @@ import pickle
 import base64
 import yaml
 import json
+import re
 from dataclasses import dataclass
 
 
@@ -304,6 +305,8 @@ def cmd_lab(request):
             domain=domain.replace("https://www.",'')
             os=request.POST.get('os')
             print(os)
+            if not re.match(r'^[a-zA-Z0-9_\-./\\]+$', domain):
+                return HttpResponse("Invalid input", status=400)
             if(os=='win'):
                 command="nslookup {}".format(domain)
             else:
